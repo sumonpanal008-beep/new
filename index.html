@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools Pro - Complete Working System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d4ff;
+            --secondary: #ff6b9d;
+            --dark: #0a0e27;
+            --darker: #05060f;
+            --light: #f5f5f5;
+            --accent: #00ffff;
+            --success: #00d084;
+            --warning: #ffb84d;
+            --danger: #ff6b6b;
+            --premium: #ffd700;
+            --bg-card: rgba(15, 20, 50, 0.8);
+            --border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #0f1c3f 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8ff 50%, #f0f0ff 100%);
+            color: #333;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        body.light-mode nav {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .navbar-menu a {
+            color: #ddd;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        body.light-mode .navbar-menu a {
+            color: #333;
+        }
+
+        .navbar-menu a:hover {
+            color: var(--accent);
+        }
+
+        .navbar-menu a.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .navbar-right button {
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #00d4ff, #00ffff);
+            color: #000;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .navbar-right button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .theme-toggle {
+            background: rgba(0, 212, 255, 0.1) !important;
+            color: var(--accent) !important;
+            width: 45px;
+            height: 45px;
+            border-radius: 50% !important;
+            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(255, 107, 157, 0.05) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00d4ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 2rem;
+        }
+
+        body.light-mode .hero p {
+            color: #666;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #00ffff);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        /* ===== FORM CONTAINER ===== */
+        .form-container {
+            max-width: 500px;
+            margin: 3rem auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        body.light-mode .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #ddd;
+        }
+
+        body.light-mode .form-group label {
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        body.light-mode .form-group input,
+        body.light-mode .form-group select {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.light-mode .form-group input::placeholder {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .form-group .form-text {
+            font-size: 0.9rem;
+            color: #aaa;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        body.light-mode .form-group .form-text {
+            color: #666;
+        }
+
+        .form-group .form-text a {
+            color: var(--accent);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-group .form-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== TOOLS GRID ===== */
+        .tools-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .tools-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--accent);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        body.light-mode .tool-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        body.light-mode .tool-desc {
+            color: #666;
+        }
+
+        /* ===== TOOL PAGE ===== */
+        .tool-page {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        body.light-mode .tool-page {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .tool-page h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .tool-page textarea,
+        .tool-page input[type="text"],
+        .tool-page input[type="number"],
+        .tool-page input[type="color"],
+        .tool-page select {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        body.light-mode .tool-page textarea,
+        body.light-mode .tool-page input[type="text"],
+        body.light-mode .tool-page input[type="number"],
+        body.light-mode .tool-page input[type="color"],
+        body.light-mode .tool-page select {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+
+        .tool-page textarea::placeholder,
+        .tool-page input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.light-mode .tool-page textarea::placeholder,
+        body.light-mode .tool-page input::placeholder {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        .output-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            min-height: 50px;
+            word-break: break-all;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .back-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .admin-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        body.light-mode .admin-stat {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .admin-stat h3 {
+            color: #aaa;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        body.light-mode .admin-stat h3 {
+            color: #666;
+        }
+
+        .admin-stat .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .admin-table {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            overflow-x: auto;
+        }
+
+        .admin-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        body.light-mode .admin-table table {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .admin-table th {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 1rem;
+            text-align: left;
+            color: var(--accent);
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .admin-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: #ddd;
+        }
+
+        body.light-mode .admin-table td {
+            color: #333;
+        }
+
+        .admin-table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            margin: 0.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-enable {
+            background: var(--success);
+            color: #000;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--success);
+            color: #000;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+            z-index: 9999;
+            max-width: 400px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.error {
+            background: var(--danger);
+            color: white;
+        }
+
+        .notification.warning {
+            background: var(--warning);
+            color: #000;
+        }
+
+        .notification.info {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: rgba(10, 14, 39, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: #aaa;
+            margin-top: 4rem;
+        }
+
+        body.light-mode footer {
+            background: rgba(255, 255, 255, 0.95);
+            color: #666;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="navbar-brand">
+            <i class="fas fa-rocket"></i> DevTools Pro
+        </div>
+        <ul class="navbar-menu">
+            <li><a onclick="switchSection('home')" class="active">Home</a></li>
+            <li><a onclick="switchSection('tools')">Tools</a></li>
+            <li><a onclick="switchSection('login')">Login</a></li>
+            <li><a onclick="switchSection('signup')">Signup</a></li>
+            <li><a onclick="switchSection('admin')">Admin</a></li>
+        </ul>
+        <div class="navbar-right">
+            <span id="userDisplay" style="color: #aaa; margin-right: 1rem;">Guest</span>
+            <button onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HOME SECTION -->
+    <section class="section active" id="home">
+        <div class="hero">
+            <div>
+                <h1>🚀 Welcome to DevTools Pro</h1>
+                <p>All-in-one professional tools for developers</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="switchSection('tools')">Explore Tools</button>
+                    <button class="btn btn-secondary" onclick="switchSection('login')">Login Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOOLS SECTION -->
+    <section class="section" id="tools">
+        <div class="tools-container">
+            <h2 class="tools-title">✨ Our Tools</h2>
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGIN SECTION -->
+    <section class="section" id="login">
+        <div class="form-container">
+            <h2 class="form-title">Login</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                <div class="form-group form-text">
+                    Don't have an account? <a onclick="switchSection('signup')">Sign up here</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- SIGNUP SECTION -->
+    <section class="section" id="signup">
+        <div class="form-container">
+            <h2 class="form-title">Sign Up</h2>
+            <form onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                <div class="form-group form-text">
+                    Already have an account? <a onclick="switchSection('login')">Login here</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- TOOLS PAGES -->
+    <section class="section" id="toolContent">
+        <div class="tool-page" id="toolPageContent">
+            <!-- Tool content will be loaded here -->
+        </div>
+    </section>
+
+    <!-- ADMIN SECTION -->
+    <section class="section" id="admin">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+            <h2 class="tools-title">🔐 Admin Dashboard</h2>
+            
+            <div class="admin-grid">
+                <div class="admin-stat">
+                    <h3>Total Users</h3>
+                    <div class="value">1,234</div>
+                </div>
+                <div class="admin-stat">
+                    <h3>Active Tools</h3>
+                    <div class="value">50</div>
+                </div>
+                <div class="admin-stat">
+                    <h3>Premium Users</h3>
+                    <div class="value">342</div>
+                </div>
+                <div class="admin-stat">
+                    <h3>System Uptime</h3>
+                    <div class="value">99.9%</div>
+                </div>
+            </div>
+
+            <div class="admin-table" style="margin-top: 3rem;">
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">Manage Tools</h3>
+                <button class="btn btn-primary" onclick="addNewTool()">+ Add Tool</button>
+                <table style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>Tool Name</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminToolsTable">
+                        <!-- Tools table will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="admin-table" style="margin-top: 3rem;">
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">Users</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Email</th>
+                            <th>Plan</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersTable">
+                        <!-- Users table will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 DevTools Pro. All rights reserved.</p>
+        <p>Made with ❤️ by Developers</p>
+    </footer>
+
+    <script>
+        // ===== STATE MANAGEMENT =====
+        const appState = {
+            currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
+            users: JSON.parse(localStorage.getItem('users')) || [],
+            isDarkMode: localStorage.getItem('theme') === 'dark' || true,
+            currentTool: null,
+            tools: [
+                { id: 'word-counter', name: 'Word Counter', icon: '📝', desc: 'Count words and characters', category: 'text' },
+                { id: 'case-converter', name: 'Case Converter', icon: '🔤', desc: 'Convert text case', category: 'text' },
+                { id: 'json-formatter', name: 'JSON Formatter', icon: '📊', desc: 'Format JSON', category: 'code' },
+                { id: 'color-picker', name: 'Color Picker', icon: '🎨', desc: 'Pick colors', category: 'color' },
+                { id: 'unit-converter', name: 'Unit Converter', icon: '📐', desc: 'Convert units', category: 'convert' },
+                { id: 'url-encoder', name: 'URL Encoder', icon: '🔗', desc: 'Encode/Decode URLs', category: 'encoder' },
+                { id: 'password-gen', name: 'Password Generator', icon: '🔐', desc: 'Generate passwords', category: 'security' },
+                { id: 'timestamp', name: 'Timestamp Converter', icon: '⏰', desc: 'Convert timestamps', category: 'time' },
+            ]
+        };
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTools();
+            loadAdminTables();
+            updateUserDisplay();
+            initTheme();
+        });
+
+        // ===== SECTION SWITCHING =====
+        function switchSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update navbar
+            document.querySelectorAll('.navbar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // ===== THEME TOGGLE =====
+        function toggleTheme() {
+            appState.isDarkMode = !appState.isDarkMode;
+            localStorage.setItem('theme', appState.isDarkMode ? 'dark' : 'light');
+            initTheme();
+            showNotification('Theme changed', 'info');
+        }
+
+        function initTheme() {
+            if (!appState.isDarkMode) {
+                document.body.classList.add('light-mode');
+                document.querySelector('.theme-toggle i').classList.remove('fa-moon');
+                document.querySelector('.theme-toggle i').classList.add('fa-sun');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.querySelector('.theme-toggle i').classList.add('fa-moon');
+                document.querySelector('.theme-toggle i').classList.remove('fa-sun');
+            }
+        }
+
+        // ===== LOGIN & SIGNUP =====
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Validation
+            if (!email || !password) {
+                showNotification('Please fill all fields', 'warning');
+                return;
+            }
+
+            // Check if user exists
+            const user = appState.users.find(u => u.email === email && u.password === password);
+            if (!user) {
+                showNotification('❌ Invalid email or password', 'error');
+                return;
+            }
+
+            // Set current user
+            appState.currentUser = { name: user.name, email: user.email };
+            localStorage.setItem('currentUser', JSON.stringify(appState.currentUser));
+            
+            showNotification(`✅ Welcome back, ${user.name}!`, 'success');
+            updateUserDisplay();
+            
+            // Reset form
+            document.querySelector('#login form').reset();
+            
+            // Redirect to home
+            setTimeout(() => switchSection('home'), 1000);
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                showNotification('Please fill all fields', 'warning');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showNotification('❌ Passwords do not match', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('❌ Password must be at least 6 characters', 'warning');
+                return;
+            }
+
+            // Check if email already exists
+            if (appState.users.find(u => u.email === email)) {
+                showNotification('❌ Email already exists', 'error');
+                return;
+            }
+
+            // Add new user
+            const newUser = { id: Date.now(), name, email, password };
+            appState.users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(appState.users));
+
+            showNotification('✅ Account created successfully! Please login.', 'success');
+            document.querySelector('#signup form').reset();
+            setTimeout(() => switchSection('login'), 1500);
+        }
+
+        function logout() {
+            appState.currentUser = null;
+            localStorage.removeItem('currentUser');
+            showNotification('✅ Logged out successfully', 'success');
+            updateUserDisplay();
+            switchSection('home');
+        }
+
+        function updateUserDisplay() {
+            const userDisplay = document.getElementById('userDisplay');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (appState.currentUser) {
+                userDisplay.textContent = `👤 ${appState.currentUser.name}`;
+                logoutBtn.style.display = 'block';
+            } else {
+                userDisplay.textContent = 'Guest';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        // ===== TOOLS SECTION =====
+        function loadTools() {
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = '';
+
+            appState.tools.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.innerHTML = `
+                    <div class="tool-icon">${tool.icon}</div>
+                    <div class="tool-name">${tool.name}</div>
+                    <div class="tool-desc">${tool.desc}</div>
+                    <button class="btn btn-primary" onclick="openTool('${tool.id}')" style="width: 100%; margin-top: 1rem;">Open</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openTool(toolId) {
+            const tool = appState.tools.find(t => t.id === toolId);
+            if (!tool) return;
+
+            appState.currentTool = tool;
+            const content = document.getElementById('toolPageContent');
+
+            // Generate tool content
+            let toolHTML = `
+                <button class="back-btn" onclick="switchSection('tools')">← Back to Tools</button>
+                <h2>${tool.icon} ${tool.name}</h2>
+            `;
+
+            // Tool-specific content
+            switch (toolId) {
+                case 'word-counter':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Enter text:</label>
+                            <textarea id="wordInput" placeholder="Paste your text here..." oninput="updateWordCount()" style="height: 150px;"></textarea>
+                        </div>
+                        <div class="output-box" style="font-family: Arial;">
+                            <strong>Words:</strong> <span id="wordCount">0</span><br>
+                            <strong>Characters:</strong> <span id="charCount">0</span><br>
+                            <strong>Sentences:</strong> <span id="sentenceCount">0</span>
+                        </div>
+                    `;
+                    break;
+
+                case 'case-converter':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Enter text:</label>
+                            <textarea id="caseInput" placeholder="Type your text..." oninput="convertCase()" style="height: 100px;"></textarea>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>UPPERCASE:</label>
+                            <div class="output-box" id="uppercase"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('uppercase')">Copy</button>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>lowercase:</label>
+                            <div class="output-box" id="lowercase"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('lowercase')">Copy</button>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>Title Case:</label>
+                            <div class="output-box" id="titlecase"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('titlecase')">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'json-formatter':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Enter JSON:</label>
+                            <textarea id="jsonInput" placeholder="Paste your JSON..." style="height: 150px;"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="formatJSON()">Format JSON</button>
+                        <div style="margin: 1rem 0;">
+                            <label>Output:</label>
+                            <div class="output-box" id="jsonOutput" style="min-height: 150px;"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('jsonOutput')">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'color-picker':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Pick a color:</label>
+                            <input type="color" id="colorPicker" value="#00d4ff" oninput="updateColor()">
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>Hex:</label>
+                            <div class="output-box" id="hexColor">#00d4ff</div>
+                            <button class="copy-btn" onclick="copyToClipboard('hexColor')">Copy</button>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>RGB:</label>
+                            <div class="output-box" id="rgbColor">rgb(0, 212, 255)</div>
+                            <button class="copy-btn" onclick="copyToClipboard('rgbColor')">Copy</button>
+                        </div>
+                        <div style="width: 100%; height: 100px; background: #00d4ff; border-radius: 8px; margin: 1rem 0;" id="colorPreview"></div>
+                    `;
+                    break;
+
+                case 'unit-converter':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>From:</label>
+                            <input type="number" id="fromValue" placeholder="Enter value" oninput="convertUnits()" style="margin: 0.5rem 0;">
+                            <select id="fromUnit" onchange="convertUnits()" style="margin: 0.5rem 0;">
+                                <option>meter</option>
+                                <option>kilometer</option>
+                                <option>centimeter</option>
+                                <option>mile</option>
+                                <option>foot</option>
+                            </select>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>To:</label>
+                            <select id="toUnit" onchange="convertUnits()" style="margin: 0.5rem 0;">
+                                <option>meter</option>
+                                <option>kilometer</option>
+                                <option>centimeter</option>
+                                <option>mile</option>
+                                <option>foot</option>
+                            </select>
+                        </div>
+                        <div class="output-box" id="conversionResult" style="font-family: Arial;">Result: 0</div>
+                    `;
+                    break;
+
+                case 'url-encoder':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Enter text:</label>
+                            <textarea id="urlInput" placeholder="Enter text..." style="height: 100px;"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="encodeURL()">Encode</button>
+                        <button class="btn btn-secondary" onclick="decodeURL()">Decode</button>
+                        <div style="margin: 1rem 0;">
+                            <label>Output:</label>
+                            <div class="output-box" id="urlOutput"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('urlOutput')">Copy</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'password-gen':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Length: <span id="lengthDisplay">16</span></label>
+                            <input type="range" id="passLength" min="6" max="50" value="16" oninput="updateLengthDisplay()" style="width: 100%; margin: 0.5rem 0;">
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <label>
+                                <input type="checkbox" id="includeNumbers" checked> Include Numbers
+                            </label>
+                            <label>
+                                <input type="checkbox" id="includeSymbols" checked> Include Symbols
+                            </label>
+                            <label>
+                                <input type="checkbox" id="includeUppercase" checked> Include Uppercase
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="generatePassword()" style="width: 100%; margin: 1rem 0;">Generate</button>
+                        <div class="output-box" id="generatedPass">Your password will appear here</div>
+                        <button class="copy-btn" onclick="copyToClipboard('generatedPass')">Copy</button>
+                    `;
+                    break;
+
+                case 'timestamp':
+                    toolHTML += `
+                        <div style="margin: 1.5rem 0;">
+                            <label>Enter Unix Timestamp:</label>
+                            <input type="number" id="timestampInput" placeholder="e.g., 1704067200" oninput="convertTimestamp()">
+                        </div>
+                        <div class="output-box" id="dateOutput">Enter a timestamp</div>
+                        <button class="btn btn-primary" onclick="getCurrentTimestamp()" style="width: 100%; margin: 1rem 0;">Get Current Timestamp</button>
+                        <div class="output-box" id="currentTimestamp"></div>
+                        <button class="copy-btn" onclick="copyToClipboard('currentTimestamp')">Copy</button>
+                    `;
+                    break;
+
+                default:
+                    toolHTML += '<p>Tool content not available</p>';
+            }
+
+            content.innerHTML = toolHTML;
+            switchSection('toolContent');
+        }
+
+        // ===== TOOL FUNCTIONS =====
+        function updateWordCount() {
+            const text = document.getElementById('wordInput').value;
+            const words = text.trim().split(/\s+/).filter(w => w).length;
+            const chars = text.length;
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim()).length;
+
+            document.getElementById('wordCount').textContent = words;
+            document.getElementById('charCount').textContent = chars;
+            document.getElementById('sentenceCount').textContent = sentences;
+        }
+
+        function convertCase() {
+            const text = document.getElementById('caseInput').value;
+            document.getElementById('uppercase').textContent = text.toUpperCase();
+            document.getElementById('lowercase').textContent = text.toLowerCase();
+            document.getElementById('titlecase').textContent = text.split(' ')
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+                .join(' ');
+        }
+
+        function formatJSON() {
+            try {
+                const input = document.getElementById('jsonInput').value;
+                const parsed = JSON.parse(input);
+                const formatted = JSON.stringify(parsed, null, 2);
+                document.getElementById('jsonOutput').textContent = formatted;
+                showNotification('✅ JSON formatted successfully', 'success');
+            } catch (e) {
+                document.getElementById('jsonOutput').textContent = '❌ Invalid JSON: ' + e.message;
+                showNotification('❌ Invalid JSON', 'error');
+            }
+        }
+
+        function updateColor() {
+            const hex = document.getElementById('colorPicker').value;
+            const rgb = hexToRgb(hex);
+
+            document.getElementById('hexColor').textContent = hex;
+            document.getElementById('rgbColor').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+            document.getElementById('colorPreview').style.background = hex;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        }
+
+        function convertUnits() {
+            const value = parseFloat(document.getElementById('fromValue').value) || 0;
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+
+            const conversions = {
+                'meter': 1,
+                'kilometer': 1000,
+                'centimeter': 0.01,
+                'mile': 1609.34,
+                'foot': 0.3048
+            };
+
+            const result = (value * conversions[fromUnit]) / conversions[toUnit];
+            document.getElementById('conversionResult').textContent = `Result: ${result.toFixed(2)} ${toUnit}`;
+        }
+
+        function encodeURL() {
+            const text = document.getElementById('urlInput').value;
+            if (!text) {
+                showNotification('Please enter text', 'warning');
+                return;
+            }
+            document.getElementById('urlOutput').textContent = encodeURIComponent(text);
+            showNotification('✅ Encoded', 'success');
+        }
+
+        function decodeURL() {
+            try {
+                const text = document.getElementById('urlInput').value;
+                if (!text) {
+                    showNotification('Please enter text', 'warning');
+                    return;
+                }
+                document.getElementById('urlOutput').textContent = decodeURIComponent(text);
+                showNotification('✅ Decoded', 'success');
+            } catch (e) {
+                showNotification('❌ Invalid encoded text', 'error');
+            }
+        }
+
+        function updateLengthDisplay() {
+            document.getElementById('lengthDisplay').textContent = document.getElementById('passLength').value;
+        }
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById('passLength').value);
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+
+            let chars = 'abcdefghijklmnopqrstuvwxyz';
+            if (includeUppercase) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (includeNumbers) chars += '0123456789';
+            if (includeSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            document.getElementById('generatedPass').textContent = password;
+            showNotification('✅ Password generated', 'success');
+        }
+
+        function convertTimestamp() {
+            const timestamp = parseInt(document.getElementById('timestampInput').value);
+            if (isNaN(timestamp)) {
+                document.getElementById('dateOutput').textContent = 'Enter a valid timestamp';
+                return;
+            }
+            const date = new Date(timestamp * 1000);
+            document.getElementById('dateOutput').textContent = date.toString();
+        }
+
+        function getCurrentTimestamp() {
+            const timestamp = Math.floor(Date.now() / 1000);
+            document.getElementById('currentTimestamp').textContent = timestamp;
+            showNotification('✅ Current timestamp copied', 'success');
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('✅ Copied to clipboard', 'success');
+            }).catch(() => {
+                showNotification('❌ Failed to copy', 'error');
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ===== ADMIN FUNCTIONS =====
+        function loadAdminTables() {
+            // Load tools table
+            const toolsTable = document.getElementById('adminToolsTable');
+            toolsTable.innerHTML = '';
+            appState.tools.forEach(tool => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tool.name}</td>
+                    <td>${tool.category}</td>
+                    <td>🟢 Active</td>
+                    <td>
+                        <button class="action-button btn-edit" onclick="editTool('${tool.id}')">Edit</button>
+                        <button class="action-button btn-delete" onclick="deleteTool('${tool.id}')">Delete</button>
+                    </td>
+                `;
+                toolsTable.appendChild(row);
+            });
+
+            // Load users table
+            const usersTable = document.getElementById('adminUsersTable');
+            usersTable.innerHTML = '';
+            appState.users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${user.email}</td>
+                    <td>Free</td>
+                    <td>✅ Active</td>
+                    <td>
+                        <button class="action-button btn-edit" onclick="editUser('${user.email}')">Edit</button>
+                        <button class="action-button btn-delete" onclick="deleteUser('${user.email}')">Delete</button>
+                    </td>
+                `;
+                usersTable.appendChild(row);
+            });
+        }
+
+        function addNewTool() {
+            const toolName = prompt('Enter tool name:');
+            if (!toolName) return;
+
+            const newTool = {
+                id: toolName.toLowerCase().replace(/\s+/g, '-'),
+                name: toolName,
+                icon: '⚙️',
+                desc: 'New tool',
+                category: 'custom'
+            };
+
+            appState.tools.push(newTool);
+            loadTools();
+            loadAdminTables();
+            showNotification('✅ Tool added successfully', 'success');
+        }
+
+        function editTool(toolId) {
+            const tool = appState.tools.find(t => t.id === toolId);
+            if (!tool) return;
+
+            const newName = prompt('Edit tool name:', tool.name);
+            if (newName) {
+                tool.name = newName;
+                loadTools();
+                loadAdminTables();
+                showNotification('✅ Tool updated', 'success');
+            }
+        }
+
+        function deleteTool(toolId) {
+            if (!confirm('Are you sure you want to delete this tool?')) return;
+
+            appState.tools = appState.tools.filter(t => t.id !== toolId);
+            loadTools();
+            loadAdminTables();
+            showNotification('✅ Tool deleted', 'success');
+        }
+
+        function editUser(email) {
+            showNotification('Edit user: ' + email, 'info');
+        }
+
+        function deleteUser(email) {
+            if (!confirm('Are you sure?')) return;
+
+            appState.users = appState.users.filter(u => u.email !== email);
+            localStorage.setItem('users', JSON.stringify(appState.users));
+            loadAdminTables();
+            showNotification('✅ User deleted', 'success');
+        }
+    </script>
+</body>
+</html>
